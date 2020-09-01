@@ -45,20 +45,13 @@ public class MainActivity extends AppCompatActivity {
     EditText pinText;
     String pincodeString;
     StringBuilder pincodeStringBuilder;
-    List <String> list;
+    List<String> list;
     String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        if(savedInstanceState != null){
-//            saveInstance = savedInstanceState.getString("pinCode");
-//        } else {
-//            saveInstance = "";
-//        }
-
 
         btn1 = findViewById(R.id.button1);
         btn2 = findViewById(R.id.button2);
@@ -86,94 +79,95 @@ public class MainActivity extends AppCompatActivity {
 
         switch (view.getId()) {
             case R.id.button0:
-                if(list.size()<4){
+                if (list.size() < 4) {
                     list.add("0");
-                }else{
+                } else {
                     break;
                 }
                 changeColor();
                 break;
             case R.id.button1:
-                if(list.size()<4){
+                if (list.size() < 4) {
                     list.add("1");
-                }else{
+                } else {
                     break;
                 }
                 changeColor();
                 break;
             case R.id.button2:
-                if(list.size()<4){
+                if (list.size() < 4) {
                     list.add("2");
-                }else{
+                } else {
                     break;
                 }
                 changeColor();
                 break;
             case R.id.button3:
-                if(list.size()<4){
+                if (list.size() < 4) {
                     list.add("3");
-                }else{
+                } else {
                     break;
                 }
                 changeColor();
                 break;
             case R.id.button4:
-                if(list.size()<4){
+                if (list.size() < 4) {
                     list.add("4");
-                }else{
+                } else {
                     break;
                 }
                 changeColor();
                 break;
             case R.id.button5:
-                if(list.size()<4){
+                if (list.size() < 4) {
                     list.add("5");
-                }else{
+                } else {
                     break;
                 }
                 changeColor();
                 break;
             case R.id.button6:
-                if(list.size()<4){
+                if (list.size() < 4) {
                     list.add("6");
-                }else{
+                } else {
                     break;
                 }
                 changeColor();
                 break;
             case R.id.button7:
-                if(list.size()<4){
+                if (list.size() < 4) {
                     list.add("7");
-                }else{
+                } else {
                     break;
                 }
                 changeColor();
                 break;
             case R.id.button8:
-                if(list.size()<4){
+                if (list.size() < 4) {
                     list.add("8");
-                }else{
+                } else {
                     break;
                 }
                 changeColor();
                 break;
             case R.id.button9:
-                if(list.size()<4){
+                if (list.size() < 4) {
                     list.add("9");
-                }else{
+                } else {
                     break;
                 }
                 changeColor();
                 break;
             case R.id.buttonClear:
-                list.remove(list.size()-1);
+                list.remove(list.size() - 1);
                 clearColor();
                 break;
         }
-            setPinText();
+        setPinText();
+        checkPassword(PreferenceManager.getDefaultSharedPreferences(this));
     }
 
-    public void changeColor() {
+    private void changeColor() {
         if (read == 1) {
             firstPin.setImageResource(R.drawable.after_24dp);
             read = 2;
@@ -209,14 +203,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setPinText() {
+    private void setPinText() {
         pincodeStringBuilder = new StringBuilder();
         for (String s : list) {
             pincodeStringBuilder.append(s);
         }
         pincodeString = pincodeStringBuilder.toString();
         pinText.setText(pincodeString);
-        savePassword(PreferenceManager.getDefaultSharedPreferences(this));
     }
 
     @Override
@@ -233,11 +226,34 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void savePassword(SharedPreferences sharedPreferences){
+    private void checkPassword(SharedPreferences sharedPreferences) {
         password = sharedPreferences.getString("password", "0000");
-        if(pinText.equals(password)){
-            Intent intent = new Intent(this, Notes.class);
-            startActivity(intent);
+        if (list.size() == 4) {
+            StringBuilder sb = new StringBuilder();
+            for (String charOfPassword : list) {
+                sb.append(charOfPassword);
+            }
+
+            if (password.equals(sb.toString())) {
+                Intent intent = new Intent(this, Notes.class);
+                startActivity(intent);
+                finish();
+            } else {
+                incorrectPassword();
+            }
         }
     }
+
+    private void incorrectPassword() {
+        firstPin.setImageResource(R.drawable.ic_brightness_1_black_24dp);
+        secondPin.setImageResource(R.drawable.ic_brightness_1_black_24dp);
+        thirdPin.setImageResource(R.drawable.ic_brightness_1_black_24dp);
+        fourthPin.setImageResource(R.drawable.ic_brightness_1_black_24dp);
+        list.removeAll(list);
+        pinText.setText("");
+        read = 1;
+        clear = 1;
+        Toast.makeText(this, "Incorrect password", Toast.LENGTH_LONG).show();
+    }
+
 }

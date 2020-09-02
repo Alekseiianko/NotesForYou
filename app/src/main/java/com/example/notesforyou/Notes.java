@@ -1,6 +1,8 @@
 package com.example.notesforyou;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -11,16 +13,32 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+
 public class Notes extends AppCompatActivity {
 
     FloatingActionButton button;
+    RecyclerView recyclerView;
+    RecyclerView.Adapter adapter;
+    RecyclerView.LayoutManager layoutManager;
+    ArrayList<NoteForView> arrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes);
 
+        // здесь я указываю что добавляет arraylist. то есть при нажатии кнопки popup menu открывается
+        // новая активити, я создаю заметку, и при нажатии кнопки сохранить новая активити должна передаваться сюда
+        // здесь она добавляется в arraylist и отображается
+
         button = findViewById(R.id.floatingActionButton);
+        recyclerView = findViewById(R.id.Notes);
+        recyclerView.setHasFixedSize(true);
+        adapter = new NotesViewAdapter(arrayList, this);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(layoutManager);
     }
 
     public void showPopupMenu(View view) {
@@ -51,14 +69,6 @@ public class Notes extends AppCompatActivity {
                         }
                     }
                 });
-
-        popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
-            @Override
-            public void onDismiss(PopupMenu menu) {
-                Toast.makeText(getApplicationContext(), "onDismiss",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
         popupMenu.show();
     }
 }

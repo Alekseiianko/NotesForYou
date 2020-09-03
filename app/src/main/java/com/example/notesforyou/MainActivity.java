@@ -224,11 +224,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, Notes.class);
                 startActivity(intent);
                 finish();
-            }else if (password.equals(null)){
-                password = sb.toString();
-                Intent intent = new Intent(this, Notes.class);
-                startActivity(intent);
-                finish();
             } else {
                 incorrectPassword();
             }

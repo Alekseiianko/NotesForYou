@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +17,7 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -26,6 +28,8 @@ public class Notes extends AppCompatActivity {
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
     ArrayList<NoteForView> arrayList = new ArrayList<>();
+    SharedPreferences sPref;
+    NoteForView note;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +40,7 @@ public class Notes extends AppCompatActivity {
         // новая активити, я создаю заметку, и при нажатии кнопки сохранить новая активити должна передаваться сюда
         // здесь она добавляется в arraylist и отображается
         Bundle arguments = getIntent().getExtras();
-        final NoteForView note;
+
         if(arguments!=null){
             note = (NoteForView) arguments.getSerializable(NoteForView.class.getSimpleName());
 
@@ -50,6 +54,7 @@ public class Notes extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
     }
+
 
     public void showPopupMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);

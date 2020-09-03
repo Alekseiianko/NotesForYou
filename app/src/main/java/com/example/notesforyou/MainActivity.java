@@ -212,20 +212,6 @@ public class MainActivity extends AppCompatActivity {
         pinText.setText(pincodeString);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Intent openSettings = new Intent(this, SettingsActivity.class);
-        startActivity(openSettings);
-        return super.onOptionsItemSelected(item);
-    }
-
     private void checkPassword(SharedPreferences sharedPreferences) {
         password = sharedPreferences.getString("password", "0000");
         if (list.size() == 4) {
@@ -235,6 +221,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (password.equals(sb.toString())) {
+                Intent intent = new Intent(this, Notes.class);
+                startActivity(intent);
+                finish();
+            }else if (password.equals(null)){
+                password = sb.toString();
                 Intent intent = new Intent(this, Notes.class);
                 startActivity(intent);
                 finish();

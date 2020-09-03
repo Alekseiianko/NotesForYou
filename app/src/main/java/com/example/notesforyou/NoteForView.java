@@ -1,6 +1,8 @@
 package com.example.notesforyou;
 
-public class NoteForView {
+import java.io.Serializable;
+
+public class NoteForView implements Serializable {
 
     String title;
     String text;

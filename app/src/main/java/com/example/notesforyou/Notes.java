@@ -8,13 +8,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.Toast;
+import android.widget.AdapterView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -27,7 +31,7 @@ public class Notes extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
-    ArrayList<NoteForView> arrayList = new ArrayList<>();
+    ArrayList<NoteForView> arrayList;
     SharedPreferences sPref;
     NoteForView note;
 
@@ -36,16 +40,27 @@ public class Notes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes);
 
-        // здесь я указываю что добавляет arraylist. то есть при нажатии кнопки popup menu открывается
-        // новая активити, я создаю заметку, и при нажатии кнопки сохранить новая активити должна передаваться сюда
-        // здесь она добавляется в arraylist и отображается
-        Bundle arguments = getIntent().getExtras();
-
-        if(arguments!=null){
-            note = (NoteForView) arguments.getSerializable(NoteForView.class.getSimpleName());
-
-            arrayList.add(note);
+//        Bundle arguments = getIntent().getExtras();
+//
+//        if(arguments!=null){
+//            note = (NoteForView) arguments.getSerializable(NoteForView.class.getSimpleName());
+//
+//            arrayList.add(note);
+//        }
+        if (savedInstanceState != null) {
+            arrayList = savedInstanceState.getParcelable("Lol");
         }
+
+        if (arrayList == null) {
+            arrayList = new ArrayList<>();
+        }
+        Gson gson = new Gson();
+        String strObj = getIntent().getStringExtra(NoteForView.class.getSimpleName());
+        NoteForView obj = gson.fromJson(strObj, NoteForView.class);
+        if(obj != null){
+            arrayList.add(obj);
+        }
+
         button = findViewById(R.id.floatingActionButton);
         recyclerView = findViewById(R.id.Notes);
         recyclerView.setHasFixedSize(true);
@@ -106,4 +121,5 @@ public class Notes extends AppCompatActivity {
         startActivity(openSettings);
         return super.onOptionsItemSelected(item);
     }
+
 }

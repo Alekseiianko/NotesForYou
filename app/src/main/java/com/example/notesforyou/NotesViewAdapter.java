@@ -41,8 +41,8 @@ public class NotesViewAdapter extends RecyclerView.Adapter<NotesViewAdapter.Note
         }
     }
 
-    public NotesViewAdapter(ArrayList<NoteForView> arrayList, Context context) {
-        this.notes = arrayList;
+    public NotesViewAdapter(ArrayList<NoteForView> notes, Context context) {
+        this.notes = notes;
         this.context = context;
     }
 

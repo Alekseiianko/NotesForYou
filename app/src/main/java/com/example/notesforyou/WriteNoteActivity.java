@@ -4,12 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+
+import com.google.gson.Gson;
 
 public class WriteNoteActivity extends AppCompatActivity {
 
@@ -41,10 +44,12 @@ public class WriteNoteActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         String title = editTitle.getText().toString();
         String text = editText.getText().toString();
+        Gson gson = new Gson();
         Intent save = new Intent(this, Notes.class);
         NoteForView noteForView = new NoteForView(title, text);
-        save.putExtra(NoteForView.class.getSimpleName(), noteForView);
+        save.putExtra(NoteForView.class.getSimpleName(), gson.toJson(noteForView));
         startActivity(save);
         return super.onOptionsItemSelected(item);
     }
+
 }

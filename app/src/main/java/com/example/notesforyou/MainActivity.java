@@ -73,6 +73,12 @@ public class MainActivity extends AppCompatActivity {
         pinText = findViewById(R.id.pinText);
         list = new ArrayList<>();
 
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        password = sp.getString("password", "");
+        if(password.equals("")) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        }
     }
 
     public void touchButton(View view) {
@@ -213,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkPassword(SharedPreferences sharedPreferences) {
-        password = sharedPreferences.getString("password", "0000");
+        password = sharedPreferences.getString("password", "");
         if (list.size() == 4) {
             StringBuilder sb = new StringBuilder();
             for (String charOfPassword : list) {
